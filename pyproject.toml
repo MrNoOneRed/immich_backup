@@ -1,0 +1,28 @@
+[project]
+name = "immich-backup"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Piotr Celinski", email = "czaru25@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "httpx>=0.28.1",
+    "pydantic[email]>=2.13.4",
+    "python-dotenv==1.2.3",
+    "requests>=2.34.2",
+]
+
+[project.scripts]
+immich-backup = "immich_backup:main"
+ib = "immich_backup:main"
+
+[build-system]
+requires = ["uv_build>=0.12.4,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.3",
+]
