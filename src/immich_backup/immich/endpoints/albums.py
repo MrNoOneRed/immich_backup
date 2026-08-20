@@ -1,26 +1,14 @@
-import requests
-from pydantic import TypeAdapter
-
-from immich_backup.immich.params.get_albums_params import GetAlbumsParams
-from immich_backup.immich.responses.album_response import AlbumResponse
+from immich_backup.immich.endpoints.base import BaseEndpoints
+from immich_backup.immich.models.albums import AlbumResponse, GetAllAlbumsQuery
 
 
-class Albums:
-    def __init__(self, session: requests.Session, baseurl: str, timeout: int = 60):
-        self.session = session
-        self.baseurl = baseurl
-        self.timeout = timeout
-
-    def get_albums(self, params: GetAlbumsParams | None = None) -> list[AlbumResponse]:
-        url = self.baseurl + "/albums"
-        response = self.session.get(
-            url,
-            timeout=self.timeout,
-            params=params.to_query_params() if params else None,
+class Albums(BaseEndpoints):
+    def get_all_albums(
+        self, query: GetAllAlbumsQuery | None = None
+    ) -> list[AlbumResponse]:
+        return self._session.request(
+            method="GET",
+            path="albums",
+            params=query,
+            response_type=list[AlbumResponse],
         )
-        response.raise_for_status()
-        json = response.json()
-
-        adapter = TypeAdapter(list[AlbumResponse])
-
-        return adapter.validate_python(json)

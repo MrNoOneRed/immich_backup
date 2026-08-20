@@ -1,8 +1,9 @@
-from immich_backup.immich.api import albums
+from immich_backup.immich.client import immich
 
 
 def main():
-    print(albums.get_albums())
+    albums = immich.albums.get_all_albums()
+    print(albums)
 
 
 if __name__ == "__main__":
